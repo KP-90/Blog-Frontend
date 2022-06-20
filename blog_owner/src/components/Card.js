@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom"
 import Card from 'react-bootstrap/Card';
 const customCard = (props) => {
+    let data = props.item.text
+    console.log(data.timstamp_formatted)
     return(
         <Card style={{ width: '50rem' }}>
             <Card.Header>
                 <Link to={`/blog/${props.item._id}`}>Post #{props.i}</Link>
-                 - {props.item.timestamp}</Card.Header>
-            <Card.Body>{props.item.text}</Card.Body>
+                 - {props.item.timstamp_formatted}</Card.Header>
+            <Card.Body dangerouslySetInnerHTML={{__html: data}}></Card.Body>
             <Card.Footer>{props.item.published}</Card.Footer>
         </Card>
         
