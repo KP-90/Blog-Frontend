@@ -31,7 +31,6 @@ const New_post = (props) => {
           })
           .catch((error) => {console.log("ERROR:", error)}) 
         }
-        //navigate("/")
     
     return(
         <div>
@@ -39,7 +38,6 @@ const New_post = (props) => {
             <h2>New Post</h2>
             <form onSubmit={HandleSubmit} id="myForm">
             <Editor
-                apiKey="skwgol5xg083xl4nx80kzfnfxredghjgktve3e8iwf2a4tcl"
                 id="myTextArea"
                 tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
                 onInit={(evt, editor) => editorRef.current = editor}

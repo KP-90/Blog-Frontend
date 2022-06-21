@@ -2,7 +2,6 @@ import { Link } from "react-router-dom"
 import Card from 'react-bootstrap/Card';
 const customCard = (props) => {
     let data = props.item.text
-    console.log(data.timstamp_formatted)
     return(
         <Card style={{ width: '50rem' }}>
             <Card.Header>
