@@ -16,7 +16,7 @@ const New_post = (props) => {
         e.preventDefault()
         console.log(e.target)
         console.log("submit acheived")
-        fetch("http://localhost:4000/blog", {
+        fetch(`${process.env.API_URL}/blog`, {
             method: 'POST',
             mode: "cors",
             headers: {

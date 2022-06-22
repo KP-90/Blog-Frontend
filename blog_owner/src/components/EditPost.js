@@ -1,21 +1,17 @@
 import { useNavigate} from "react-router-dom"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useLocation } from "react-router-dom"
 import React, { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Button } from "react-bootstrap";
 import Header from "./header"
 const Edit_Post = (props) => {
-    let [data, setData] = useState('')
+    //Get the passed in props from the link
+    const location = useLocation()
+    let data = location.state.item
     let id = useParams()
-    useEffect(() => {
-        fetch(`http://localhost:4000/blog/${id.id}`)
-        .then(response => response.json())
-        .then(data => {
-            setData(data)
-        })
-    }, [])
 
+    // Gets info from the text editor
     const editorRef = useRef(null);
     const log = () => {
         if (editorRef.current) {
@@ -23,12 +19,13 @@ const Edit_Post = (props) => {
         };
     }
     
+    // Submitting the form
     const navigate = useNavigate();
     const HandleSubmit = (e) => {
         e.preventDefault()
         console.log(e.target)
         console.log("submit acheived")
-        fetch(`http://localhost:4000/blog/${data.id}/edit`, {
+        fetch(`${process.env.API_URL}/blog/${data.id}/edit`, {
             method: 'POST',
             mode: "cors",
             headers: {
@@ -45,7 +42,6 @@ const Edit_Post = (props) => {
         }
     
     return(
-        
         <div>
             <Header/>
             <h2>Edit Post</h2>

@@ -9,7 +9,7 @@ const CustomCard = (props) => {
 
     const handleDelete = (e) => {
         if(window.confirm("Are you sure you want to delete this post?")) {
-            fetch(`http://localhost:4000/blog/${props.item.id}/delete`, {
+            fetch(`${process.env.API_URL}/blog/${props.item.id}/delete`, {
                 method: 'POST',
                 mode: 'cors'
             })
@@ -26,7 +26,7 @@ const CustomCard = (props) => {
     const handlePublish = (e) => {
         let status = props.item.published
         if(window.confirm("This item is NOT published. Are you sure you want publish it?")) {
-            fetch(`http://localhost:4000/blog/${props.item.id}/edit`, {
+            fetch(`${process.env.API_URL}/blog/${props.item.id}/edit`, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {
@@ -46,13 +46,13 @@ const CustomCard = (props) => {
     return(
         <Card style={{ width: '50rem' }}>
             <Card.Header>
-                <Link to={`/blog/${props.item._id}`}>Post #{props.i}</Link>
+                <Link to={`/blog/${props.item._id}`} state={{ blog: props.item}}>Post #{props.i}</Link>
                  - {props.item.timstamp_formatted}</Card.Header>
             <Card.Body dangerouslySetInnerHTML={{__html: data}}></Card.Body>
             <Card.Footer>
                 Published: {props.item.published.toString()}
                 <button id="publishBtn" onClick={handlePublish}>Publish</button>
-                <Link to={`/blog/${props.item._id}/edit`}><button id="editBtn">Edit</button></Link>
+                <Link to={`/blog/${props.item._id}/edit`} state={{item:props.item}}><button id="editBtn">Edit</button></Link>
                 <button id="deleteBtn" onClick={handleDelete}>Delete</button>
             </Card.Footer>
         </Card>

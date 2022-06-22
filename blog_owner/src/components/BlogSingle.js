@@ -1,18 +1,42 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useLocation } from "react-router-dom"
 import Card from 'react-bootstrap/Card';
 import Header from "./header"
 const Blog_single = (props) => {
-    let [data, setData] = useState('')
-    let id = useParams()
+    const location = useLocation()
+    const id = useParams()
+
+    const data = location.state.blog
+    let [comments, setComments] = useState(undefined)
+    
+    // Get all comments for this post
     useEffect(() => {
-        fetch(`http://localhost:4000/blog/${id.id}`)
+        fetch(`${process.env.API_URL}/comments/${id.id}`, {mode: 'cors'})
         .then(response => response.json())
         .then(data => {
-            setData(data)
+            setComments(data)
         })
     }, [])
-    
+
+    const handleSubmit = (e) => {
+        let comm_text = document.querySelector("#comment_box").value
+        fetch(`${process.env.API_URL}/comments`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {'Content-Type': 'application/json',},
+            body: JSON.stringify({
+                post_id: data.id,
+                text: comm_text,
+                author: "Anon"
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+        })
+        
+    }
+
     return(
         <div >
             <Header />
@@ -26,6 +50,15 @@ const Blog_single = (props) => {
                 ) : (
                     <p>Loading....</p>
                 )}
+                <form onSubmit={handleSubmit}>
+                    <textarea cols={45} rows={5} id="comment_box"></textarea>
+                    <button type="submit">Comment</button>
+                </form>
+                <div>
+                    { comments && (comments.length > 0) ? 
+                        (<p>{comments[0].text}</p>) : (<p>No comments yet.</p>)
+                    }
+                </div>
                 
             </div>
         </div>
