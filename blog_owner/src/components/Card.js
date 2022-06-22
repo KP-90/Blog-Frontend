@@ -9,7 +9,7 @@ const CustomCard = (props) => {
 
     const handleDelete = (e) => {
         if(window.confirm("Are you sure you want to delete this post?")) {
-            fetch(`${process.env.API_URL}/blog/${props.item.id}/delete`, {
+            fetch(`${process.env.REACT_APP_API_URL}/blog/${props.item.id}/delete`, {
                 method: 'POST',
                 mode: 'cors'
             })
@@ -26,7 +26,7 @@ const CustomCard = (props) => {
     const handlePublish = (e) => {
         let status = props.item.published
         if(window.confirm("This item is NOT published. Are you sure you want publish it?")) {
-            fetch(`${process.env.API_URL}/blog/${props.item.id}/edit`, {
+            fetch(`${process.env.REACT_APP_API_URL}/blog/${props.item.id}/edit`, {
                 method: 'POST',
                 mode: 'cors',
                 headers: {

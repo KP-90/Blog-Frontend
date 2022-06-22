@@ -11,16 +11,18 @@ const Blog_single = (props) => {
     
     // Get all comments for this post
     useEffect(() => {
-        fetch(`${process.env.API_URL}/comments/${id.id}`, {mode: 'cors'})
+        //Using process.env variable breaks this for some reason
+        fetch(`${process.env.REACT_APP_API_URL}/comments/${id.id}`, {mode: 'cors'})
         .then(response => response.json())
         .then(data => {
+            console.log(data)
             setComments(data)
         })
     }, [])
 
     const handleSubmit = (e) => {
         let comm_text = document.querySelector("#comment_box").value
-        fetch(`${process.env.API_URL}/comments`, {
+        fetch(`${process.env.REACT_APP_API_URL}/comments`, {
             method: 'POST',
             mode: 'cors',
             headers: {'Content-Type': 'application/json',},

@@ -25,7 +25,7 @@ const Edit_Post = (props) => {
         e.preventDefault()
         console.log(e.target)
         console.log("submit acheived")
-        fetch(`${process.env.API_URL}/blog/${data.id}/edit`, {
+        fetch(`${process.env.REACT_APP_API_URL}/blog/${data.id}/edit`, {
             method: 'POST',
             mode: "cors",
             headers: {

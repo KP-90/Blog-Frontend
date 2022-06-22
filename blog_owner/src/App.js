@@ -5,9 +5,8 @@ import Main from './components/Main'
 
 const App = () => {
   const [blogposts, setBlogs] = useState('')
-
   useEffect(() => {
-    fetch('http://localhost:4000', {mode: "cors"})
+    fetch(`${process.env.REACT_APP_API_URL}`, {mode: "cors"})
     .then(response => { 
       return response.json()
     })
