@@ -20,8 +20,9 @@ const Blog_single = (props) => {
         })
     }, [])
 
-    const handleSubmit = (e) => {
+    const HandleSubmit = (e) => {
         let comm_text = document.querySelector("#comment_box").value
+        let commentor = document.querySelector("#commentor").value
         fetch(`${process.env.REACT_APP_API_URL}/comments`, {
             method: 'POST',
             mode: 'cors',
@@ -29,7 +30,7 @@ const Blog_single = (props) => {
             body: JSON.stringify({
                 post_id: data.id,
                 text: comm_text,
-                author: "Anon"
+                author: commentor
             })
         })
         .then(response => response.json())
@@ -52,9 +53,10 @@ const Blog_single = (props) => {
                 ) : (
                     <p>Loading....</p>
                 )}
-                <form onSubmit={handleSubmit}>
-                    <textarea cols={45} rows={5} id="comment_box"></textarea>
-                    <button type="submit">Comment</button>
+                <form onSubmit={HandleSubmit}>
+                    <textarea cols={45} rows={5} id="comment_box" placeholder="Comment..."></textarea>
+                    <input type="text" id="commentor" placeholder="Your name"></input>
+                    <button type="submit">Post Comment</button>
                 </form>
                 <div>
                     { comments && (comments.length > 0) ? 

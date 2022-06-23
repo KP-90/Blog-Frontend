@@ -1,11 +1,14 @@
+import { useNavigate } from 'react-router'
 import Form from 'react-bootstrap/Form'
 import { Button } from 'react-bootstrap'
 import { useState } from 'react'
+import Header from './header'
 
 const Signup = () => {
 
     let [errors, setErrors] = useState([])
-    const handleSubmit = (e) => {
+    const HandleSubmit = (e) => {
+        const navigate = useNavigate()
         e.preventDefault()
         let uname = document.querySelector("#formBasicUsername").value
         let user_pass = document.querySelector("#formBasicPassword").value
@@ -23,42 +26,50 @@ const Signup = () => {
             })
             .then(response => response.json())
             .then(data => {
-                setErrors(data)
-                console.log(data)
+                if(data.length > 0) {
+                    setErrors(data)
+                    console.log(data)
+                }
+                else {
+                    navigate('/')
+                }
             })
         }
         else{console.log("Field is empty")}
     }
 
     return(
-        <Form id='signup-form' onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicUsername">
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Enter username" />
-                <Form.Text className="text-muted">
-                  Pick something unique
-                </Form.Text>
-            </Form.Group>
+        <div>
+            <Header />
+            <Form id='signup-form' onSubmit={HandleSubmit}>
+                <Form.Group className="mb-3" controlId="formBasicUsername">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control type="text" placeholder="Enter username" />
+                    <Form.Text className="text-muted">
+                    Pick something unique
+                    </Form.Text>
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formConfirmPassword">
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control type="password" placeholder="Confirm..." />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
-            {errors && (errors.length > 0) ? 
-                (errors.map(function(error, i) { 
-                    return <p key={i}>{error.msg}</p>
-                })
-            ) : (
-                <></>
-            )}
-        </Form>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" placeholder="Password" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formConfirmPassword">
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control type="password" placeholder="Confirm..." />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
+                {errors && (errors.length > 0) ? 
+                    (errors.map(function(error, i) { 
+                        return <p key={i}>{error.msg}</p>
+                    })
+                ) : (
+                    <></>
+                )}
+            </Form>
+        </div>
     )
 }
 
