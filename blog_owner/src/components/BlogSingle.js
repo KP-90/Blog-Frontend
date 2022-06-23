@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react"
 import { useParams, useLocation } from "react-router-dom"
+import Form from 'react-bootstrap/Form'
+import { Button } from 'react-bootstrap'
+
 import Card from 'react-bootstrap/Card';
 import Header from "./header"
+
 const Blog_single = (props) => {
     const location = useLocation()
     const id = useParams()
@@ -18,9 +22,10 @@ const Blog_single = (props) => {
             console.log(data)
             setComments(data)
         })
-    }, [])
+    }, [id])
 
     const HandleSubmit = (e) => {
+        e.preventDefault()
         let comm_text = document.querySelector("#comment_box").value
         let commentor = document.querySelector("#commentor").value
         fetch(`${process.env.REACT_APP_API_URL}/comments`, {
@@ -36,6 +41,7 @@ const Blog_single = (props) => {
         .then(response => response.json())
         .then(data => {
             console.log(data)
+            window.location.reload()
         })
         
     }
@@ -53,14 +59,19 @@ const Blog_single = (props) => {
                 ) : (
                     <p>Loading....</p>
                 )}
-                <form onSubmit={HandleSubmit}>
-                    <textarea cols={45} rows={5} id="comment_box" placeholder="Comment..."></textarea>
-                    <input type="text" id="commentor" placeholder="Your name"></input>
-                    <button type="submit">Post Comment</button>
-                </form>
-                <div>
-                    { comments && (comments.length > 0) ? 
-                        (<p>{comments[0].text}</p>) : (<p>No comments yet.</p>)
+                <Form id="comment_form" onSubmit={HandleSubmit} >
+                    <textarea cols={45} rows={5} id="comment_box" placeholder="Comment..." required></textarea>
+                    <Form.Control type="text" id="commentor" placeholder="Your Name" required/>
+                    <Button variant="primary" sz="sm" type="submit">Post Comment</Button>
+                </Form>
+
+                <div id="commentSection">
+                    <h3>Comments:</h3>
+                    { comments && (comments.length > 0) ? (
+                    comments.map((comment, i) => {
+                        return <p key={i}>"{comment.text}" - {comment.author}</p>
+                    })
+                    ) : (<p>No comments yet.</p>)
                     }
                 </div>
                 
