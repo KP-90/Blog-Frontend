@@ -1,11 +1,19 @@
 import { Link, useNavigate } from "react-router-dom"
 import Card from 'react-bootstrap/Card';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const CustomCard = (props) => {
     const data = props.item.text
     const navigate = useNavigate()
     const navigation = useNavigate()
+    let [count, setCount] = useState(0)
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_API_URL}/comments/${props.item.id}`, {mode: 'cors'})
+        .then(response => response.json())
+        .then(data => {
+            setCount(data.count)
+        })
+    }, [])
 
     const handleDelete = (e) => {
         if(window.confirm("Are you sure you want to delete this post?")) {
@@ -54,6 +62,7 @@ const CustomCard = (props) => {
                 <button id="publishBtn" onClick={handlePublish}>Publish</button>
                 <Link to={`/blog/${props.item._id}/edit`} state={{item:props.item}}><button id="editBtn">Edit</button></Link>
                 <button id="deleteBtn" onClick={handleDelete}>Delete</button>
+                <p>{count} comments.</p>
             </Card.Footer>
         </Card>
         

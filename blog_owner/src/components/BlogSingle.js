@@ -2,11 +2,12 @@ import { useEffect, useState } from "react"
 import { useParams, useLocation } from "react-router-dom"
 import Card from 'react-bootstrap/Card';
 import Header from "./header"
+import { Form } from "react-bootstrap";
 const Blog_single = (props) => {
     const location = useLocation()
     const id = useParams()
 
-    const data = location.state.blog
+    let data = location.state.blog
     let [comments, setComments] = useState(undefined)
     
     // Get all comments for this post
@@ -15,12 +16,12 @@ const Blog_single = (props) => {
         fetch(`${process.env.REACT_APP_API_URL}/comments/${id.id}`, {mode: 'cors'})
         .then(response => response.json())
         .then(data => {
-            console.log(data)
-            setComments(data)
+            setComments(data.comments)
         })
     }, [])
 
     const HandleSubmit = (e) => {
+        e.preventDefault()
         let comm_text = document.querySelector("#comment_box").value
         let commentor = document.querySelector("#commentor").value
         fetch(`${process.env.REACT_APP_API_URL}/comments`, {
@@ -36,31 +37,36 @@ const Blog_single = (props) => {
         .then(response => response.json())
         .then(data => {
             console.log(data)
+            window.location.reload()
         })
         
     }
 
+
     return(
         <div >
             <Header />
-            <div>
+            <div className='content'>
                 <h1>BLOG SINGLE PAGE</h1>
                 {data ? (
                     <Card style={{ width: '95vw' }}>
-                        <Card.Header>Post #{props.i} - {data.timestamp_formatted}</Card.Header>
+                        <Card.Header>Posted {data.timstamp_formatted}</Card.Header>
                         <Card.Body dangerouslySetInnerHTML={{__html:data.text}}></Card.Body>
                     </Card>
                 ) : (
                     <p>Loading....</p>
                 )}
-                <form onSubmit={HandleSubmit}>
-                    <textarea cols={45} rows={5} id="comment_box" placeholder="Comment..."></textarea>
-                    <input type="text" id="commentor" placeholder="Your name"></input>
+                <Form id="comment_form" onSubmit={HandleSubmit}>
+                    <textarea cols={45} rows={5} id="comment_box" placeholder="Comment..." required></textarea>
+                    <Form.Control type="text" id="commentor" placeholder="Name" required />
                     <button type="submit">Post Comment</button>
-                </form>
+                </Form>
                 <div>
-                    { comments && (comments.length > 0) ? 
-                        (<p>{comments[0].text}</p>) : (<p>No comments yet.</p>)
+                    { comments && (comments.length > 0) ? (
+                        comments.map((comment, i) => {
+                            return <p key={i}>"{comment.text}" - {comment.author}</p>
+                        })
+                            ) : (<p>No comments yet.</p>)
                     }
                 </div>
                 

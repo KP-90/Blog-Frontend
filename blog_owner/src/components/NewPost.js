@@ -33,7 +33,7 @@ const New_post = (props) => {
         }
     
     return(
-        <div>
+        <div className='content'>
             <Header/>
             <h2>New Post</h2>
             <form onSubmit={HandleSubmit} id="myForm">
