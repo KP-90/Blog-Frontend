@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react"
 import { useParams, useLocation } from "react-router-dom"
+import Form from 'react-bootstrap/Form'
+import { Button } from 'react-bootstrap'
+
 import Card from 'react-bootstrap/Card';
 import Header from "./header"
-import { Form } from "react-bootstrap";
+
 const Blog_single = (props) => {
     const location = useLocation()
     const id = useParams()
@@ -18,7 +21,7 @@ const Blog_single = (props) => {
         .then(data => {
             setComments(data.comments)
         })
-    }, [])
+    }, [id])
 
     const HandleSubmit = (e) => {
         e.preventDefault()
@@ -56,17 +59,19 @@ const Blog_single = (props) => {
                 ) : (
                     <p>Loading....</p>
                 )}
-                <Form id="comment_form" onSubmit={HandleSubmit}>
+                <Form id="comment_form" onSubmit={HandleSubmit} >
                     <textarea cols={45} rows={5} id="comment_box" placeholder="Comment..." required></textarea>
-                    <Form.Control type="text" id="commentor" placeholder="Name" required />
-                    <button type="submit">Post Comment</button>
+                    <Form.Control type="text" id="commentor" placeholder="Your Name" required/>
+                    <Button variant="primary" sz="sm" type="submit">Post Comment</Button>
                 </Form>
-                <div>
+
+                <div id="commentSection">
+                    <h3>Comments:</h3>
                     { comments && (comments.length > 0) ? (
-                        comments.map((comment, i) => {
-                            return <p key={i}>"{comment.text}" - {comment.author}</p>
-                        })
-                            ) : (<p>No comments yet.</p>)
+                    comments.map((comment, i) => {
+                        return <p key={i}>"{comment.text}" - {comment.author}</p>
+                    })
+                    ) : (<p>No comments yet.</p>)
                     }
                 </div>
                 
