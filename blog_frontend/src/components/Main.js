@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import Card from './Card'
+import CustomCard from './Card'
 const Main = (props) => {
     let filler = {
         _id:0,
@@ -11,10 +10,12 @@ const Main = (props) => {
         <div className='content'>
             {props.data ? (
                 props.data.map((item, i) => {
-                    return <Card i={i+1} item={item} key={item._id}/>
+                    if(item.published) {
+                        return <CustomCard i={i+1} item={item} key={item._id}/>
+                    }
                 })
             ) : (
-                <Card i={0} item={filler}/>
+                <CustomCard i={0} item={filler}/>
             )}
         </div>
     )
